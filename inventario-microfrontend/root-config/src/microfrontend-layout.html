@@ -1,0 +1,17 @@
+<single-spa-router>
+  <main>
+    
+    <!-- Ruta para login -->
+    <route path="/login">
+      <application name="@inventario/auth"></application>
+    </route>
+    <!-- Inventario (Angular) -->
+    <route path="/inventario">
+      <application name="@inventario/inventario-mf"></application>
+    </route>
+
+    <!-- Ruta por defecto (luego será dashboard o redirección) -->
+    <route default>
+    </route>
+  </main>
+</single-spa-router>

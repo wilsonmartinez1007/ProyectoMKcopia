@@ -1,0 +1,60 @@
+
+services:
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+    # Para que el host 'backend' funcione desde otros contenedores
+    networks:
+      - inventario-net
+
+  root-config:
+    build:
+      context: ./inventario-microfrontend/root-config
+      dockerfile: Dockerfile
+    container_name: root-config
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./inventario-microfrontend/root-config:/app
+    networks:
+      - inventario-net
+    depends_on:
+      - backend
+
+  auth-mf:
+    build:
+      context: ./inventario-microfrontend/auth-mf
+      dockerfile: Dockerfile
+    container_name: auth-mf
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./inventario-microfrontend/auth-mf:/app
+    networks:
+      - inventario-net
+    depends_on:
+      - backend
+
+  inventario-mf:
+    build:
+      context: ./inventario-microfrontend/inventario-mf
+      dockerfile: Dockerfile
+    container_name: inventario-mf
+    ports:
+      - "4200:4200"
+    volumes:
+      - ./inventario-microfrontend/inventario-mf:/app
+    networks:
+      - inventario-net
+    depends_on:
+      - backend
+
+networks:
+  inventario-net:
+    driver: bridge
